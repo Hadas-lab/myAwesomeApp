@@ -1,5 +1,21 @@
-<div class="movie-container">
-  <h1>{{ movie.name }}</h1>
+<div 
+  *ngIf="!!movie"
+  class="movie-container"
+  [ngStyle] = "{border: movie.rating > 8 ? '1px solid green ' : '1px solid red', 'borderWidth': borderWidth + 'px'}"  
+  [ngClass] = "{'good-movie': movie.rating > 8}"
+  >
+
+  <div [ngSwitch]="movie.type">
+    
+    <div *ngSwitchCase="movieTypeEnum.Action">Action</div>
+    <div *ngSwitchCase="movieTypeEnum.Drama">Drama</div>
+    <div *ngSwitchDefault>No Type</div>
+  </div>
+
+  <h1>{{ movie.name | uppercase}}</h1>
   <p>Main Character: {{ movie.mainChar }}</p>
   <p>Rating: {{ movie.rating }}</p>
+  <p>Release: {{ movie.releaseDate | date }}</p>
+  <button (click)="deleteMovie()">Delete Movie</button>
 </div>
+<!-- pipes - transformation on item -->

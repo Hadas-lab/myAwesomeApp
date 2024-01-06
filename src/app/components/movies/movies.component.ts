@@ -1,4 +1,7 @@
-import { Component, OnInit, OnChanges, SimpleChange, Input, SimpleChanges } from "@angular/core";
+import { Component, OnInit, OnChanges, SimpleChanges } from "@angular/core";
+import { Movie } from "../../models/movie.interface";
+import { MovieType } from "../../models/movie-type.enum";
+import { MovieService } from "../../services/movie.service";
 
 @Component({
   selector: 'app-movies',
@@ -7,16 +10,46 @@ import { Component, OnInit, OnChanges, SimpleChange, Input, SimpleChanges } from
 })
 export class MoviesComponent implements OnInit, OnChanges {
 
-  title : string = 'MoviesComponent';
-  @Input() listOfMovies: string[] = [];
+  constructor(private movieService: MovieService) { }
+
+  title: string = 'MoviesComponent';
+
+  public movies : Movie[] = [];
+
+  public listOfMovies: Movie[] = [
+    {
+      name: "Captain America",
+      mainChar: "Steve",
+      rating: 7.5,
+      releaseDate: new Date(),
+      type: MovieType.Action
+    },
+    {
+      name: "Spiderman",
+      mainChar: "Peter Parker",
+      rating: 8.5,
+      releaseDate: new Date(2018, 11, 20),
+      type: MovieType.Action
+    },
+    {
+      name: "Guardiains of the Galaxy",
+      mainChar: "Peter",
+      rating: 6.5,
+      releaseDate: new Date(2018, 8, 20),
+      type: MovieType.Drama
+    },
+  ];
+
+  public deleteMovie(movieIndex: number): void {
+    this.listOfMovies.splice(movieIndex, 1);
+  }
 
   ngOnInit(): void {
-    console.log('from ngOnInit');
-    console.log('this.listOfMovies');
-    console.log(this.listOfMovies);
+    this.movieService.setMovies(this.listOfMovies);
+    console.log('movies', this.movieService.getMovies());
+    this.movies = this.movieService.getMovies()
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('from ngOnCahnges');
   }
 }

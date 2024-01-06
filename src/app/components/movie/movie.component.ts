@@ -1,22 +1,25 @@
-import { Component } from '@angular/core';
-
-export interface Movie {
-  name: string;
-  mainChar: string;
-  rating: number;
-}
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Movie } from '../../models/movie.interface';
+import { MovieType } from '../../models/movie-type.enum';
 
 @Component({
-  selector: 'app-movie',
+  selector: 'app-movie',  
   templateUrl: './movie.component.html',
   styleUrl: './movie.component.scss'
 })
 export class MovieComponent {
   constructor() {}
 
-  public movie: Movie = {
-    name: 'Iron man',
-    mainChar: 'Tony Stark',
-    rating: 8.2
+  get movieTypeEnum() {
+    return MovieType;
   }
+
+  deleteMovie() : void{
+    this.onDeleteMovie.emit(this.movieIndex);
+  }
+
+  @Input() movie: Movie | undefined;
+  @Input() borderWidth: number | undefined;
+  @Input() movieIndex: number | undefined; 
+  @Output() onDeleteMovie: EventEmitter<number> = new EventEmitter<number>();
 }
